@@ -1,0 +1,38 @@
+<?php 
+  session_start();
+  if(!isset($_SESSION['uname']))
+    header('location:http://localhost/hostel_inventory_system/Home.php');
+?>
+<?php
+	$size=sizeof($_POST);
+	$record=$size/8;
+
+	for($i=1;$i<=$record;$i++)
+	{
+		$index1="hostel_no".$i;
+		$sno[$i]=$_POST[$index1];
+		$index2="room_no".$i;
+		$item[$i]=$_POST[$index2];
+		$index3="room_type".$i;
+		$order_date[$i]=$_POST[$index3];
+		$index4="occupied_status".$i;
+		$received[$i]=$_POST[$index4];
+		$index5="occupant_rollno".$i;
+		$price[$i]=$_POST[$index5];
+		$index6="chair".$i;
+		$quantity[$i]=$_POST[$index6];
+		$index7="tables".$i;
+		$total[$i]=$_POST[$index7];
+		$index8="fans".$i;
+		$fans[$i]=$_POST[$index8];
+	}
+	$con=mysqli_connect('localhost','root');
+	mysqli_select_db($con,'hism');
+	for($i=1;$i<=$record;$i++)
+	{
+		$q="update room_inventory set room_no='$item[$i]',room_type='$order_date[$i]',occupied_status='$received[$i]',occupant_rollno='$price[$i]',chair=$quantity[$i],tables=$total[$i],fans=$fans[$i] where hostel_no='$sno[$i]'";
+		mysqli_query($con,$q);
+	}
+	mysqli_close($con);
+	header('location:http://localhost/hostel_inventory_system/update_inventory.php');
+?>

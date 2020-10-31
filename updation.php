@@ -1,0 +1,36 @@
+<?php 
+  session_start();
+  if(!isset($_SESSION['uname']))
+    header('location:http://localhost/hostel_inventory_system/Home.php');
+?>
+<?php
+	$size=sizeof($_POST);
+	$record=$size/8;
+
+	for($i=1;$i<=$record;$i++)
+	{
+		$index1="sno".$i;
+		$sno[$i]=$_POST[$index1];
+		$index2="item".$i;
+		$item[$i]=$_POST[$index2];
+		$index3="order_date".$i;
+		$order_date[$i]=$_POST[$index3];
+		$index4="received".$i;
+		$received[$i]=$_POST[$index4];
+		$index5="price".$i;
+		$price[$i]=$_POST[$index5];
+		$index6="quantity".$i;
+		$quantity[$i]=$_POST[$index6];
+		$index7="total".$i;
+		$total[$i]=$_POST[$index7];
+	}
+	$con=mysqli_connect('localhost','root');
+	mysqli_select_db($con,'hism');
+	for($i=1;$i<=$record;$i++)
+	{
+		$q="update inventory set item='$item[$i]',order_date='$order_date[$i]',received='$received[$i]',price=$price[$i],quantity=$quantity[$i],total=$total[$i] where sno=$sno[$i]";
+		mysqli_query($con,$q);
+	}
+	mysqli_close($con);
+	header('location:http://localhost/hostel_inventory_system/updateform.php');
+?>
